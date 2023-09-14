@@ -1,2 +1,39 @@
-# @name hello
-GET http://localhost:3333
+# @name get-prompts
+GET http://localhost:3333/prompts
+
+###
+
+###
+
+# @name upload
+POST http://localhost:3333/videos
+Content-Type: multipart/form-data; boundary=----UploadVideoBoundary
+
+------UploadVideoBoundary
+Content-Disposition: form-data; name="file"; filename="example.mp3"
+Content-Type: audio/mpeg
+
+< ./example.mp3
+------UploadVideoBoundary--
+
+###
+
+# @name create-transcription
+POST http://localhost:3333/videos/4b4e2537-6da0-47d0-91e6-4d1cce235035/transcription
+Content-Type: application/json
+
+{
+  "prompt": "clean architecture, ddd"
+}
+
+###
+
+# @name generate-ai-completion
+POST http://localhost:3333/ai/complete
+Content-Type: application/json
+
+{
+  "videoId": "a8d2df0d-1774-4928-a3f9-bc83729c9603",
+  "temperature": 0.5,
+  "template": "Gere um resumo da transcrição do vídeo informada a seguir: '''{transcription}'''"
+}
